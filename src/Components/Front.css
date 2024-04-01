@@ -1,15 +1,47 @@
-.top{
-
-    clip-path: polygon(0% 0%, 100% 0%, 100% 60%, 60% 60%, 40% 100% , 0% 100%);
+.top {
+	clip-path: polygon(0% 0%, 100% 0%, 100% 60%, 60% 60%, 40% 100%, 0% 100%);
 }
-.top2{
-    clip-path: polygon(0% 0%, 100% 0%, 100% 64%, 60% 64%, 40% 100% , 3% 100%, 0% 85%);
-
+.top2 {
+	clip-path: polygon(
+		0% 0%,
+		100% 0%,
+		100% 64%,
+		60% 64%,
+		40% 100%,
+		3% 100%,
+		0% 85%
+	);
 }
-.window{
-    clip-path: polygon(0% 0%, 100% 0%, 100% 100% , 14% 100%, 0% 80%);
-
+.window {
+	clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 14% 100%, 0% 80%);
 }
 .window-wrap {
-  filter: drop-shadow(-1px 6px 3px rgba(50, 50, 0, 0.5));
+	filter: drop-shadow(-1px 6px 3px rgba(50, 50, 0, 0.5));
+}
+.btn:active .inner {
+	transform: translate(0, 0);
+	border: 0;
+}
+.btn {
+	filter: drop-shadow(3px 3px 3px rgba(50, 50, 0, 0.5));
+}
+.buttons {
+	background: linear-gradient(#181515, #2c2222, #040101);
+	border: 0.9px solid #222;
+	border-radius: 2px;
+	box-shadow: inset 0 5px 1px rgba(22, 21, 21, 0.35),
+		0 5px 5px rgba(0, 0, 0, 0.5), 0 15px 25px rgba(0, 0, 0, 0.35);
+}
+.buttons::before {
+	content: '';
+	position: absolute;
+	inset: 5px 3px;
+	border-top: 0.7px solid #372f2f;
+	filter: blur(2px);
+}
+.wrap-btn:active .buttons {
+    transform: translate(0,0);
+    border-left:  0.9px solid #222;;
+	box-shadow: inset 0 5px 1px rgba(0, 0, 0, 0.35),
+		inset 0 5px 5px rgba(0, 0, 0, 0.5), inset 0 15px 25px rgba(0, 0, 0, 0.35);
 }
