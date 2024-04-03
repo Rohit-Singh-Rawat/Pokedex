@@ -1,5 +1,6 @@
 import React from 'react'
 import Front from './Front'
+import Back from './Back'
 
 const Pokedex = () => {
   return (
@@ -7,6 +8,7 @@ const Pokedex = () => {
         <Front>
 
         </Front>
+        <Back></Back>
     </div>
   )
 }

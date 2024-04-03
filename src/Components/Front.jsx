@@ -5,7 +5,7 @@ const Front = () => {
 	return (
 		<div className='w-[350px] rounded-bl-xl gap-5 flex flex-col shadow-2xl  shadow-black  h-[550px] bg-gradient-to-br  from-40% from-[#a60729]  to-[#DC0433] '>
 			<div className='flex flex-col items-end'>
-				<div className='top2 h-[114px]  rounded-tl-xl flex justify-between items-top bg-[#840413]'>
+				<div className='top2 h-[114px]   w-[360px] rounded-tl-xl flex justify-between items-top bg-gradient-to-b from-50% from-[#74051f] from to-[#840413]'>
 					<div className='top w-[360px]  rounded-tl-xl h-[100px] bg-[#DC0433]'></div>
 				</div>
 			</div>
