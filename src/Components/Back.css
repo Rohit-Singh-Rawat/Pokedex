@@ -8,3 +8,17 @@
 		0% 100%
 	);
 }
+.circle{
+	background: radial-gradient(
+    circle closest-corner at center 26px,
+    rgb(11, 11, 126) 90%,
+	#1f53ad
+  ) no-repeat;
+}
+.btn:active .inner {
+	transform: translate(0, 0);
+	border: 0;
+}
+.btn {
+	filter: drop-shadow(3px 3px 3px rgba(50, 50, 0, 0.5));
+}
