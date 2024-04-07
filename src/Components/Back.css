@@ -24,3 +24,9 @@
 .btn {
 	filter: drop-shadow(3px 3px 3px rgba(50, 50, 0, 0.5));
 }
+.shad{
+	-webkit-box-shadow: inset -21px -34px 87px -42px rgba(0,0,0,0.69);
+-moz-box-shadow: inset -21px -34px 87px -42px rgba(0,0,0,0.69);
+box-shadow: inset -21px -34px 87px -42px rgba(0,0,0,0.69);
+text-shadow: 2px -1px 3px rgba(0,0,0,0.68);
+}

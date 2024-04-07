@@ -1,16 +1,64 @@
-import React from 'react'
-import './Back.css'
-const Back = () => {
-  return (
+import React, { useEffect, useRef, useState } from 'react';
+import './Back.css';
+const Back = ({pokemon, setPokemonId}) => {
+	const colours = {
+		normal: '#A8A77A',
+		fire: '#EE8130',
+		water: '#6390F0',
+		electric: '#F7D02C',
+		grass: '#7AC74C',
+		ice: '#96D9D6',
+		fighting: '#C22E28',
+		poison: '#A33EA1',
+		ground: '#E2BF65',
+		flying: '#A98FF3',
+		psychic: '#F95587',
+		bug: '#A6B91A',
+		rock: '#B6A136',
+		ghost: '#735797',
+		dragon: '#6F35FC',
+		dark: '#705746',
+		steel: '#B7B7CE',
+		fairy: '#D685AD',
+	};
+
+	const [newId, setNewId] = useState('');
+	const timerRef = useRef(null);
+	const [entering, setEntering] = useState(false);
+
+	const handleNum = async(e) => {
+		setEntering(true);
+		clearTimeout(timerRef.current);
+		let Idz;
+		 setNewId((id) => {
+			Idz = id + e.target.innerHTML;
+			return Idz;
+		});
+		timerRef.current = setTimeout(() => {
+			setPokemonId(Idz);
+			setNewId('');
+			setEntering(false)
+		}, 2000);
+	};
+	return (
 		<div className='w-[350px] back rounded-br-2xl gap-5 flex justify-center items-center shadow-2xl  shadow-black  h-[570px] bg-gradient-to-br  from-40% from-[#a60729]  to-[#DC0433] '>
 			<div className='w-[320px] back rounded-b-2xl gap-5 flex justify-center items-center shadow-2xl  shadow-black  h-[524px] bg-[#1c1c1c] '>
 				<div className='w-[316px] back rounded-b-2xl p-8 gap-5 flex flex-col justify-end items-center shadow-2xl  shadow-black  h-[520px]    bg-gradient-to-br  from-40% from-[#a60729]  to-[#DC0433] '>
-					<div className='w-full h-[90px] screen relative rounded-md '></div>
+					<div className='w-full text-white h-[90px] screen relative rounded-md '>
+						{entering ? newId : null}
+					</div>
 					<div className='w-full h-auto'>
 						<div className='grid grid-rows-2  grid-cols-5 gap-[0.7px] w-full h-[70px]'>
 							{[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((num) => (
-								<button className='btn  rounded-sm  min-w-[95%] x h-full cursor-pointer bg-[#021c2f]'>
-									<div className='text-white inner w-full border-l-[1px] border-black h-full font-semibold flex justify-center items-center  -translate-x-[1.5px] -translate-y-[1.5px] rounded-sm px-3  bg-blue-500 '>
+								<button
+									key={num}
+									className='btn  rounded-sm  min-w-[95%] x h-full cursor-pointer bg-[#021c2f]'
+									value={num}
+									onClick={(e) => {
+										handleNum(e);
+									}}
+								>
+									<div  className='text-white inner w-full border-l-[1px] border-black h-full font-semibold flex justify-center items-center  -translate-x-[1.5px] -translate-y-[1.5px] rounded-sm px-3  bg-blue-500 ' >
 										{num}
 									</div>
 								</button>
@@ -75,7 +123,7 @@ const Back = () => {
 							<div className='font-bold circle text-white shadow-2xl inner w-8 h-8  flex items-center justify-center   -translate-x-[1.5px] -translate-y-[1.5px] rounded-full    border-l-[1px] border-t-[1px] border-white  '>
 								<svg
 									xmlns='http://www.w3.org/2000/svg'
-									enable-background='new 0 0 24 24'
+									enableBackground='new 0 0 24 24'
 									viewBox='0 0 24 24'
 									id='Lock'
 									className='w-6 h-6'
@@ -84,20 +132,39 @@ const Back = () => {
 										d='M17,9V7c0-2.8-2.2-5-5-5S7,4.2,7,7v2c-1.7,0-3,1.3-3,3v7c0,1.7,1.3,3,3,3h10c1.7,0,3-1.3,3-3v-7C20,10.3,18.7,9,17,9z M9,7
 	c0-1.7,1.3-3,3-3s3,1.3,3,3v2H9V7z M13,17c0,0.6-0.4,1-1,1s-1-0.4-1-1v-3c0-0.6,0.4-1,1-1s1,0.4,1,1V17z'
 										fill='#ffffff'
-										class='color000000 svgShape'
+										className='color000000 svgShape'
 									></path>
 								</svg>
 							</div>
 						</button>
 					</div>
-					<div className='h-[10%] flex gap-8 px-3 w-full'>
-						<div className='w-full h-full rounded-lg screen relative'></div>
-						<div className='w-full h-full rounded-lg screen relative'></div>
+					<div className='h-[10%] flex gap-8 px-3 w-full uppercase font-bold 	text-xl text-white'>
+						<div
+							style={{
+								background: pokemon?.types?.[0]?.type.name
+									? colours[pokemon?.types?.[0]?.type.name]
+									: '#777',
+							}}
+							className='w-full border-[1px] border-[#1d1c1c]  flex justify-center items-center h-full rounded-lg shad screen relative'
+						>
+							{pokemon?.types?.[0]?.type.name}
+						</div>
+						<div
+							style={{
+								background: pokemon?.types?.[1]?.type.name
+									? colours[pokemon?.types?.[1]?.type.name]
+									: '#777',
+							}}
+							className='w-full border-[1px] border-[#1d1c1c]  flex justify-center items-center h-full rounded-lg shad screen relative'
+						>
+							{' '}
+							{pokemon?.types?.[1]?.type.name}
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	);
-}
+};
 
-export default Back 
+export default Back;

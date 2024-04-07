@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './Front.css';
 
-const Front = () => {
+const Front = ({ pokemon, setPokemonId }) => {
+	const [showFront, setShowFront] = useState(true);
 	return (
 		<div className='w-[400px]  relative rounded-bl-xl gap-5 flex flex-col  shadow-2xl  shadow-black  h-[570px] bg-gradient-to-br  from-40% from-[#a60729]  to-[#DC0433] '>
 			<div className='flex flex-col items-end '>
@@ -31,7 +32,19 @@ const Front = () => {
 								<div className='w-3 h-3 rounded-full bg-red-900'></div>
 								<div className='w-3 h-3 rounded-full bg-red-900'></div>
 							</div>
-							<div className='w-[68%] h-[60%] rounded-md relative screen'></div>
+							<div className='w-[68%] flex justify-center items-center h-[60%] rounded-md relative screen'>
+								<img
+									src={
+										showFront
+											? pokemon.sprites?.other?.showdown.front_default ??
+											  pokemon.sprites?.front_default
+											: pokemon.sprites?.other?.showdown.back_default ??
+											  pokemon.sprites?.back_default ?? 'no'
+									}
+									alt=''
+									className='object-contain max-h-full'
+								/>
+							</div>
 							<div className='flex justify-between w-full px-10'>
 								<div className='w-5 h-5 rounded-full bg-red-600'></div>
 								<div className='flex flex-col gap-[4.5px]'>
@@ -64,10 +77,61 @@ const Front = () => {
 						</div>
 					</button>
 					<div className='flex justify-around px-5 items-center'>
-						<div className='screen relative w-[130px] min-w-[130px] h-14'></div>
+						<div className='screen relative w-[130px]  min-w-[130px] h-14'>
+							<div className='text-white shad bg-red-600 border-2 border-black h-full w-full flex justify-center flex-col '>
+								<div className='flex pl-2 justify-start items-center text-lg gap-3'>
+									<div className='w-6 p h-6 flex justify-center items-center bg-white rounded-full'>
+										<svg
+											height='64'
+											viewBox='0 0 64 64'
+											width='64'
+											xmlns='http://www.w3.org/2000/svg'
+											className='w-6 h-6'
+										>
+											<g
+												fill='none'
+												fillRule='evenodd'
+											>
+												<path
+													d='m4 32c0-15.463973 12.536027-28 28-28s28 12.536027 28 28z'
+													fill='#e43535'
+												/>
+												<path
+													d='m4 60c0-15.463973 12.536027-28 28-28s28 12.536027 28 28z'
+													fill='#ececec'
+													transform='matrix(1 0 0 -1 0 92)'
+												/>
+												<g stroke='#595959'>
+													<path
+														d='m5 32h54'
+														strokeLinecap='square'
+														strokeWidth='2'
+													/>
+													<circle
+														cx='32'
+														cy='32'
+														fill='#fff'
+														r='8'
+														strokeLinecap='round'
+														strokeWidth='4'
+													/>
+												</g>
+											</g>
+										</svg>
+									</div>
+									{String(pokemon.id).padStart(3, '0')}
+								</div>
+								<div className='w-full  flex items-end pl-2 uppercase text-sm font-bold  bg-white h-[50%] text-black'>
+									{pokemon.name}
+								</div>
+							</div>
+						</div>
 						<div className='bg-gradient-to-br pl-[3px] pt-[3px]	 border-r-4 flex flex-col justify-center items-center to-80% to-red-700  border-b-2 border-red-700  from-[#4b0505] shadow-[10px_15px_10px_-15px_rgba(0,0,0,0.6)] rounded-full w-24 h-24'>
 							<div className='flex'>
-								<button className='wrap-btn w-6 h-6 bg-[#301f1f] rounded-sm '>
+								<button
+									className='wrap-btn w-6 h-6 bg-[#301f1f] rounded-sm '
+									onClick={() => setPokemonId((id) => id - 1)}
+								>
 									<div className='w-6 h-6 buttons -translate-x-[1px] -translate-y-[1px] bg-black flex justify-center items-center'>
 										<svg
 											xmlns='http://www.w3.org/2000/svg'
@@ -83,7 +147,10 @@ const Front = () => {
 								</button>
 							</div>
 							<div className='flex'>
-								<button className='wrap-btn w-6 h-6 bg-[#301f1f] rounded-sm '>
+								<button
+									className='wrap-btn w-6 h-6 bg-[#301f1f] rounded-sm '
+									onClick={() => setShowFront((view) => !view)}
+								>
 									<div className='w-6 h-6 buttons -translate-x-[1px] -translate-y-[1px] bg-black flex justify-center items-center'>
 										<svg
 											xmlns='http://www.w3.org/2000/svg'
@@ -100,7 +167,10 @@ const Front = () => {
 								<button className='wrap-btn w-6 h-6 bg-[#301f1f] rounded-sm '>
 									<div className='w-6 h-6 buttons border-0 -translate-x-[1px] -translate-y-[1px] bg-black flex justify-center items-center'></div>
 								</button>
-								<button className='wrap-btn w-6 h-6 bg-[#301f1f] rounded-sm '>
+								<button
+									className='wrap-btn w-6 h-6 bg-[#301f1f] rounded-sm '
+									onClick={() => setShowFront((view) => !view)}
+								>
 									<div className='w-6 h-6 buttons -translate-x-[1px] -translate-y-[1px] bg-black flex justify-center items-center'>
 										<svg
 											xmlns='http://www.w3.org/2000/svg'
@@ -116,7 +186,10 @@ const Front = () => {
 								</button>
 							</div>
 							<div className='flex'>
-								<button className='wrap-btn w-6 h-6 bg-[#301f1f] rounded-sm '>
+								<button
+									className='wrap-btn w-6 h-6 bg-[#301f1f] rounded-sm '
+									onClick={() => setPokemonId((id) => id + 1)}
+								>
 									<div className='w-6 h-6 buttons -translate-x-[1px] -translate-y-[1px] bg-black flex justify-center items-center'>
 										<svg
 											xmlns='http://www.w3.org/2000/svg'
