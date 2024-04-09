@@ -1,6 +1,36 @@
 import React, { useEffect, useRef, useState } from 'react';
 import './Back.css';
-const Back = ({pokemon, setPokemonId}) => {
+import axios from 'axios';
+
+const Back = ({ pokemon, pokemonId, setPokemonId, setPokemon }) => {
+	const [isErr, setIsErr] = useState('');
+	const [description, setDescription] = useState('');
+
+	useEffect(() => {
+		(async () => {
+			try {
+				const response = await axios.get(
+					`https://pokeapi.co/api/v2/pokemon-species/${pokemonId}`
+				);
+
+				const desc_list = response.data.flavor_text_entries.filter(
+					(description) => {
+						return description.language.name === 'en';
+					}
+				);
+				console.log(desc_list);
+				setDescription(
+					desc_list[
+						Math.floor(Math.random() * desc_list.length)
+					].flavor_text.replace(/(?:\r\n|\r|\n)/g, ' ')
+				);
+			} catch (error) {
+				setIsErr('Data Not Found');
+				setTimeout(()=>{setIsErr('')}, 2000)
+			}
+		})();
+	}, [pokemonId]);
+
 	const colours = {
 		normal: '#A8A77A',
 		fire: '#EE8130',
@@ -21,31 +51,43 @@ const Back = ({pokemon, setPokemonId}) => {
 		steel: '#B7B7CE',
 		fairy: '#D685AD',
 	};
-
 	const [newId, setNewId] = useState('');
 	const timerRef = useRef(null);
 	const [entering, setEntering] = useState(false);
 
-	const handleNum = async(e) => {
+	const handleNum = async (e) => {
 		setEntering(true);
 		clearTimeout(timerRef.current);
 		let Idz;
-		 setNewId((id) => {
+		setNewId((id) => {
 			Idz = id + e.target.innerHTML;
 			return Idz;
 		});
 		timerRef.current = setTimeout(() => {
 			setPokemonId(Idz);
 			setNewId('');
-			setEntering(false)
+			setEntering(false);
 		}, 2000);
 	};
+	const screenRef = useRef('');
 	return (
-		<div className='w-[350px] back rounded-br-2xl gap-5 flex justify-center items-center shadow-2xl  shadow-black  h-[570px] bg-gradient-to-br  from-40% from-[#a60729]  to-[#DC0433] '>
+		<div className='w-[350px] back rounded-br-2xl  gap-5 flex justify-center items-center shadow-2xl  shadow-black  h-[570px] bg-gradient-to-br  from-40% from-[#a60729]  to-[#DC0433] '>
 			<div className='w-[320px] back rounded-b-2xl gap-5 flex justify-center items-center shadow-2xl  shadow-black  h-[524px] bg-[#1c1c1c] '>
 				<div className='w-[316px] back rounded-b-2xl p-8 gap-5 flex flex-col justify-end items-center shadow-2xl  shadow-black  h-[520px]    bg-gradient-to-br  from-40% from-[#a60729]  to-[#DC0433] '>
-					<div className='w-full text-white h-[90px] screen relative rounded-md '>
-						{entering ? newId : null}
+					<div className='w-full p-4 font-[pokeFont] text-white h-[90px] screen relative rounded-md '>
+						{isErr.length ? (
+							isErr
+						) : entering ? (
+							<div className='text-xs'>Search for Pokemon: {newId}</div>
+						) : (
+							<div
+								ref={screenRef}
+								className='text-xs descScreen overflow-auto  leading-[19px] z-100  h-full  w-[100%]'
+							>
+								{' '}
+								{description}{' '}
+							</div>
+						)}
 					</div>
 					<div className='w-full h-auto'>
 						<div className='grid grid-rows-2  grid-cols-5 gap-[0.7px] w-full h-[70px]'>
@@ -58,7 +100,7 @@ const Back = ({pokemon, setPokemonId}) => {
 										handleNum(e);
 									}}
 								>
-									<div  className='text-white inner w-full border-l-[1px] border-black h-full font-semibold flex justify-center items-center  -translate-x-[1.5px] -translate-y-[1.5px] rounded-sm px-3  bg-blue-500 ' >
+									<div className='text-white inner w-full border-l-[1px] border-black h-full font-semibold flex justify-center items-center  -translate-x-[1.5px] -translate-y-[1.5px] rounded-sm px-3  bg-blue-500 '>
 										{num}
 									</div>
 								</button>
@@ -88,7 +130,14 @@ const Back = ({pokemon, setPokemonId}) => {
 					</div>
 					<div className='flex justify-between items-end px-6 py-1 w-full'>
 						<div className='flex'>
-							<button className='wrap-btn w-8 h-8 rounded-l-lg  bg-[#301f1f]'>
+							<button
+								className='wrap-btn w-8 h-8 rounded-l-lg  bg-[#301f1f]'
+								onClick={() => {
+									const container = screenRef.current;
+									if (!container) return;
+									container.scrollTop -= 20;
+								}}
+							>
 								<div className='w-8 h-8  buttons rounded-none rounded-l-lg border-l-[#aba0a0]  border-t-[#aba0a0] border-t-[0.2px] border-l-[0.5px] -translate-x-[1px] -translate-y-[1px] bg-black flex justify-center items-center'>
 									<svg
 										xmlns='http://www.w3.org/2000/svg'
@@ -103,7 +152,14 @@ const Back = ({pokemon, setPokemonId}) => {
 								</div>
 							</button>
 
-							<button className='wrap-btn w-8 h-8 rounded-r-lg bg-[#301f1f]  '>
+							<button
+								className='wrap-btn w-8 h-8 rounded-r-lg bg-[#301f1f]  '
+								onClick={() => {
+									const container = screenRef.current;
+									if (!container) return;
+									container.scrollTop += 20;
+								}}
+							>
 								<div className='w-8 h-8 buttons rounded-none rounded-r-lg border-r-[#aba0a0] border-t-[#aba0a0] border-t-[0.2px] border-l-[0.5px] -translate-x-[1px] -translate-y-[1px] bg-black flex justify-center items-center'>
 									<svg
 										xmlns='http://www.w3.org/2000/svg'
