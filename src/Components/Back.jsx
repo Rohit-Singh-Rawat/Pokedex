@@ -2,12 +2,23 @@ import React, { useEffect, useRef, useState } from 'react';
 import './Back.css';
 import axios from 'axios';
 
-const Back = ({ pokemon, pokemonId, setPokemonId, setPokemon }) => {
+const Back = ({
+	pokemon,
+	pokemonId,
+	setPokemonId,
+	setPokemon,
+	loading,
+	lock,
+}) => {
 	const [isErr, setIsErr] = useState('');
+	const screenRef = useRef('');
 	const [description, setDescription] = useState('');
 
 	useEffect(() => {
 		(async () => {
+			const container = screenRef.current;
+			if (!container) return;
+			container.scrollTop = 0;
 			try {
 				const response = await axios.get(
 					`https://pokeapi.co/api/v2/pokemon-species/${pokemonId}`
@@ -26,7 +37,9 @@ const Back = ({ pokemon, pokemonId, setPokemonId, setPokemon }) => {
 				);
 			} catch (error) {
 				setIsErr('Data Not Found');
-				setTimeout(()=>{setIsErr('')}, 2000)
+				setTimeout(() => {
+					setIsErr('');
+				}, 2000);
 			}
 		})();
 	}, [pokemonId]);
@@ -69,13 +82,16 @@ const Back = ({ pokemon, pokemonId, setPokemonId, setPokemon }) => {
 			setEntering(false);
 		}, 2000);
 	};
-	const screenRef = useRef('');
 	return (
 		<div className='w-[350px] back rounded-br-2xl  gap-5 flex justify-center items-center shadow-2xl  shadow-black  h-[570px] bg-gradient-to-br  from-40% from-[#a60729]  to-[#DC0433] '>
 			<div className='w-[320px] back rounded-b-2xl gap-5 flex justify-center items-center shadow-2xl  shadow-black  h-[524px] bg-[#1c1c1c] '>
 				<div className='w-[316px] back rounded-b-2xl p-8 gap-5 flex flex-col justify-end items-center shadow-2xl  shadow-black  h-[520px]    bg-gradient-to-br  from-40% from-[#a60729]  to-[#DC0433] '>
 					<div className='w-full p-4 font-[pokeFont] text-white h-[90px] screen relative rounded-md '>
-						{isErr.length ? (
+						{lock ? null : loading ? (
+							<div className='text-lg font-black flex justify-center items-center h-full '>
+								Loading
+							</div>
+						) : isErr.length ? (
 							isErr
 						) : entering ? (
 							<div className='text-xs'>Search for Pokemon: {newId}</div>
@@ -97,7 +113,7 @@ const Back = ({ pokemon, pokemonId, setPokemonId, setPokemon }) => {
 									className='btn  rounded-sm  min-w-[95%] x h-full cursor-pointer bg-[#021c2f]'
 									value={num}
 									onClick={(e) => {
-										handleNum(e);
+										lock ? null : handleNum(e);
 									}}
 								>
 									<div className='text-white inner w-full border-l-[1px] border-black h-full font-semibold flex justify-center items-center  -translate-x-[1.5px] -translate-y-[1.5px] rounded-sm px-3  bg-blue-500 '>
@@ -176,45 +192,38 @@ const Back = ({ pokemon, pokemonId, setPokemonId, setPokemon }) => {
 						</div>
 
 						<button className=' ml-10 mb-5 btn rounded-full w-8 h-8 cursor-pointer bg-[#5d0303]'>
-							<div className='font-bold circle text-white shadow-2xl inner w-8 h-8  flex items-center justify-center   -translate-x-[1.5px] -translate-y-[1.5px] rounded-full    border-l-[1px] border-t-[1px] border-white  '>
-								<svg
-									xmlns='http://www.w3.org/2000/svg'
-									enableBackground='new 0 0 24 24'
-									viewBox='0 0 24 24'
-									id='Lock'
-									className='w-6 h-6'
-								>
-									<path
-										d='M17,9V7c0-2.8-2.2-5-5-5S7,4.2,7,7v2c-1.7,0-3,1.3-3,3v7c0,1.7,1.3,3,3,3h10c1.7,0,3-1.3,3-3v-7C20,10.3,18.7,9,17,9z M9,7
-	c0-1.7,1.3-3,3-3s3,1.3,3,3v2H9V7z M13,17c0,0.6-0.4,1-1,1s-1-0.4-1-1v-3c0-0.6,0.4-1,1-1s1,0.4,1,1V17z'
-										fill='#ffffff'
-										className='color000000 svgShape'
-									></path>
-								</svg>
-							</div>
+							<div className='font-bold circle text-white shadow-2xl inner w-8 h-8  flex items-center justify-center   -translate-x-[1.5px] -translate-y-[1.5px] rounded-full    border-l-[1px] border-t-[1px] border-white  '>S</div>
 						</button>
 					</div>
 					<div className='h-[10%] flex gap-8 px-3 w-full uppercase font-bold 	text-xl text-white'>
 						<div
 							style={{
-								background: pokemon?.types?.[0]?.type.name
+								background: lock
+									? null
+									: loading
+									? 'black'
+									: pokemon?.types?.[0]?.type.name
 									? colours[pokemon?.types?.[0]?.type.name]
 									: '#777',
 							}}
 							className='w-full border-[1px] border-[#1d1c1c]  flex justify-center items-center h-full rounded-lg shad screen relative'
 						>
-							{pokemon?.types?.[0]?.type.name}
+							{lock ? null : loading ? null : pokemon?.types?.[0]?.type.name}
 						</div>
 						<div
 							style={{
-								background: pokemon?.types?.[1]?.type.name
+								background: lock
+									? null
+									: loading
+									? 'black'
+									: pokemon?.types?.[1]?.type.name
 									? colours[pokemon?.types?.[1]?.type.name]
 									: '#777',
 							}}
 							className='w-full border-[1px] border-[#1d1c1c]  flex justify-center items-center h-full rounded-lg shad screen relative'
 						>
 							{' '}
-							{pokemon?.types?.[1]?.type.name}
+							{lock ? null : loading ? null : pokemon?.types?.[1]?.type.name}
 						</div>
 					</div>
 				</div>
