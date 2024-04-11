@@ -13,12 +13,11 @@ const Back = ({
 	const [isErr, setIsErr] = useState('');
 	const screenRef = useRef('');
 	const [description, setDescription] = useState('');
-
+	const [audio, setAudio] = useState(null);
 	useEffect(() => {
 		(async () => {
 			const container = screenRef.current;
-			if (!container) return;
-			container.scrollTop = 0;
+			if (container) container.scrollTop = 0;
 			try {
 				const response = await axios.get(
 					`https://pokeapi.co/api/v2/pokemon-species/${pokemonId}`
@@ -29,7 +28,6 @@ const Back = ({
 						return description.language.name === 'en';
 					}
 				);
-				console.log(desc_list);
 				setDescription(
 					desc_list[
 						Math.floor(Math.random() * desc_list.length)
@@ -39,11 +37,14 @@ const Back = ({
 				setIsErr('Data Not Found');
 				setTimeout(() => {
 					setIsErr('');
-				}, 2000);
+				}, 1000);
 			}
 		})();
 	}, [pokemonId]);
-
+	useEffect(() => {
+		let aud = new Audio(pokemon?.cries?.latest);
+		setAudio(aud);
+	}, [pokemon]);
 	const colours = {
 		normal: '#A8A77A',
 		fire: '#EE8130',
@@ -191,8 +192,48 @@ const Back = ({
 							</button>
 						</div>
 
-						<button className=' ml-10 mb-5 btn rounded-full w-8 h-8 cursor-pointer bg-[#5d0303]'>
-							<div className='font-bold circle text-white shadow-2xl inner w-8 h-8  flex items-center justify-center   -translate-x-[1.5px] -translate-y-[1.5px] rounded-full    border-l-[1px] border-t-[1px] border-white  '>S</div>
+						<button
+							className=' ml-10 mb-5 btn rounded-full w-8 h-8 cursor-pointer bg-[#5d0303]'
+							onClick={() => {
+								lock ? null : audio.play();
+							}}
+						>
+							<div className='font-bold circle text-white shadow-2xl inner w-8 h-8  flex items-center justify-center   -translate-x-[1.5px] -translate-y-[1.5px] rounded-full    border-l-[1px] border-t-[1px] border-white  '>
+								<svg
+									xmlns='http://www.w3.org/2000/svg'
+									viewBox='0 0 32 32'
+									id='Vynil'
+								>
+									<g
+										data-name='Layer 12'
+										fill='#ffffff'
+										class='color000000 svgShape'
+									>
+										<circle
+											cx='16'
+											cy='16'
+											r='10'
+											fill='none'
+											stroke='#ffffff'
+											stroke-linecap='round'
+											stroke-linejoin='round'
+											stroke-width='2'
+											class='colorStroke000000 svgStroke'
+										></circle>
+										<circle
+											cx='16'
+											cy='16'
+											r='3'
+											fill='none'
+											stroke='#ffffff'
+											stroke-linecap='round'
+											stroke-linejoin='round'
+											stroke-width='2'
+											class='colorStroke000000 svgStroke'
+										></circle>
+									</g>
+								</svg>
+							</div>
 						</button>
 					</div>
 					<div className='h-[10%] flex gap-8 px-3 w-full uppercase font-bold 	text-xl text-white'>

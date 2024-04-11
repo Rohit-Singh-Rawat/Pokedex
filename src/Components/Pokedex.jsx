@@ -19,14 +19,14 @@ const Pokedex = () => {
 
 				setPokemon(response.data);
 			} catch (error) {
-				setIsErr('Data Not Found');
+				setPokemonId(pokemon?.id ?? 1)
 			} finally {
 				setLoading(false);
 			}
 		})();
 	}, [pokemonId]);
 	return (
-		<content className='min-h-screen max-w-[100vw] max-h-screen  relative min-w-[100vw] flex justify-center items-center'>
+		<div className='min-h-screen max-w-[100vw] max-h-screen  relative min-w-[100vw] flex justify-center items-center'>
 			<div className='flex gap-0'>
 				<Front
 					pokemon={pokemon}
@@ -49,7 +49,7 @@ const Pokedex = () => {
 				alt=''
 				className='absolute max-h-screen min-h-screen -z-10 max-w-[100dvw] min-w-[100dvw]'
 			/>
-		</content>
+		</div>
 	);
 };
 
